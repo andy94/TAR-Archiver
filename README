@@ -27,8 +27,8 @@
 		char charptr[512];
 		struct header {
 			char name[100]; - nume fisier
-			char mode[8]; - valoarea in octal a drepturilor de executie asupra 
-							sa
+			char mode[8]; - valoarea in octal a drepturilor de executie 
+					asupra sa
 			char uid[8]; - uid utilizator
 			char gid[8]; - gid al grupului din care face parte utilizatorul
 			char size[12]; - dimensiunea fisierului
@@ -83,7 +83,8 @@
 		
 		Prin comanda quit se iese din program.
 	
-		Astfel, programul simuleaza functii simple ale unui arhivator de fisiere.
+		Astfel, programul simuleaza functii simple ale unui arhivator de 
+	fisiere.
 
 	
 			Programul in sine:
