@@ -4,6 +4,13 @@
 	Proiect anul 1, primul semestru, la materia Programarea Calculatoarelor.
 	Subiect: construirea unui arhivator TAR.
 	Limbaj ales: C
+	
+	############################     ATENTIE !!!    ############################
+	Temele sunt verificate pe VMChecker. Nu incercati sa copiati codul, deoarece
+	VMChecker verifica si sursele existente pe GitHub. In plus, fiecare tema va 
+	ajuta foarte mult daca incercati sa o realizati singuri. Asa ca, daca ai
+	ajuns aici pentru a cauta o tema, iti recomand calduros sa inchizi tab-ul cu 
+	GitHub si sa te apuci singur de ea. Spor!
 	----------------------------------------------------------------------------
 	
 			Aspecte generale:
@@ -44,7 +51,6 @@
 			char devminor[8]; - 0
 		} header;
 	}RECORD;	
-	
 
 			Ideea generala a programului:
 			
@@ -86,7 +92,6 @@
 		Astfel, programul simuleaza functii simple ale unui arhivator de 
 	fisiere.
 
-	
 			Programul in sine:
 			
 	1. Se verifica existenta fisierelor file_ls si usermap.txt. In cazul in care 
