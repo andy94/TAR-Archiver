@@ -1,0 +1,105 @@
+	Ursache Andrei
+	
+	----------------------------------------------------------------------------
+	Proiect anul 1, primul semestru, la materia Programarea Calculatoarelor.
+	Subiect: construirea unui arhivator TAR.
+	Limbaj ales: C
+	----------------------------------------------------------------------------
+	
+			Aspecte generale:
+			
+		Pentru implementarea temei am nu folosit variabile globale. De asemenea,
+	am folosit 7 functii de citire si modificare a datelor (din fisiere, in 
+	special). Patru dintre acestea sunt construite pentru comenzile pe care le 
+	primeste programul (load, list, get, quit), iar celelalte trei 
+	(citeste_comanda(), numar_fisiere(), octal_decimal) sunt functii auxiliare 
+	care ajuta la viziualarea si claritatea programului.
+	
+		Un alt aspect important sunt cele doua structuri de date si uniunea 
+	folosita pentru datele din arhiva: COMANDA, DATE si, respectiv, RECORD. 
+	Prima dintre acestea se refera la comanda pe care o primeste programul, 
+	deoarece retine campurile comenzii, iar cea de-a doua retine elementele 
+	datei ultimei modificari a unui fisier pentru determinarea mtime[12].
+	Uniunea folosita pentru gestionarea datelor din arhiva are urmatoarea 
+	structura:
+
+	typedef union record { 
+		char charptr[512];
+		struct header {
+			char name[100]; - nume fisier
+			char mode[8]; - valoarea in octal a drepturilor de executie asupra 
+							sa
+			char uid[8]; - uid utilizator
+			char gid[8]; - gid al grupului din care face parte utilizatorul
+			char size[12]; - dimensiunea fisierului
+			char mtime[12]; - numarul de secunde de la 1-1-1970 pana la data 
+							  ultimei modificari
+			char chksum[8]; - suma octetilor din header
+			char typeflag; - '0'
+			char linkname[100]; - nume fisier
+			char magic[8]; - "GNUtar "
+			char uname[32]; - nume utilizator
+			char gname[32]; - nume grup din care face parte utilizatorul
+			char devmajor[8]; - 0
+			char devminor[8]; - 0
+		} header;
+	}RECORD;	
+	
+
+			Ideea generala a programului:
+			
+		Programul pe care l-am realizat efectueaza comenzi simple de creeare si 
+	interogare a unei arhive tar. Avand date fisierele "file_ls" si 
+	"usermap.txt", programul realizeaza o arhiva tar cu toate fisierele 
+	mentionate in file_ls. Pentru acest lucru sunt cautate datele necesare din 
+	header in cele doua fisiere.
+	
+		Prin comanda load (relizata cu functia load()), programul determina in 
+	primul rand cate fisiere trebuie sa arhiveze. Pentru fiecare fisier in 
+	parte programul cauta in fisierul file_ls si usermap.txt informatiile de 
+	care are nevoie pentru a creea headerul. Inafara de name, linkname, 
+	magic, uname si gname, toate valorile stocate in celelalte campuri ale 
+	structurii header sunt in octal. Un exemplu (ascii) de header obtinut de 
+	program este: "file_ls0000664000175000017500000000023612264215601013206
+	0file_lsGNUtar andreiandrei". Dupa obtinerea tuturor datelor din header 
+	programul scrie in arhiva pe care o creeaza headerul obtinut (fiind 
+	uniune, scrie vectorul charptr[], initializat la inceput cu 0).Astfel, 
+	primul bloc este headerul. Dupa acest lucru se copiaza in charptr 
+	blocuri de dimensiune 512 octeti textul din fisier si se scrie (de cate 
+	este nevoie) in arhiva. Se repeta acest lucru pana (inclusiv) la ultimul 
+	fisier si se realizeaza arhiva cu numele dat (bloc_header, bloc_date, 
+	bloc_date, ..., bloc_header, bloc_date, bloc_date, ..., ..., 
+	ultim_bloc_header, bloc_date, ..., ultim_bloc_date).
+		
+		Comanda list (realizata cu functia list()) afiseaza numele tuturor 
+	fisierelor continute de arhiva data. Cauta in primul bloc (header) 
+	numele primului fisier si il afiseaza. Daca este cazul sare size/512+1 
+	blocuri si trece la urmatorul fisier s.a.m.d.
+	
+		Comanda get (realizata cu functia get()) afiseaza continutul fisierului 
+	dat din arhiva. Astfel se citesc headere (similar ca la funtia list) pana 
+	cand numele fisierului este cel cautat. Se afiseaza urmatoarele size/512+1 
+	blocuri ce constituie datele din fisierul dat.
+		
+		Prin comanda quit se iese din program.
+	
+		Astfel, programul simuleaza functii simple ale unui arhivator de fisiere.
+
+	
+			Programul in sine:
+			
+	1. Se verifica existenta fisierelor file_ls si usermap.txt. In cazul in care 
+	acestea nu exista se afiseaza un mesaj de eroare si se iese din program;
+	2. Intr-o bluca while se citesc comenzi pana la intalnirea comenzii "quit".
+	3. Cu ajutorul funciei strcmp() se compara numele comenzii primite cu 
+	funciile disponibile si se apeleaza cea potrivita;
+	4. In cazul in care comanda data nu exista se afiseaza un mesaj de eroare;
+	5. La primirea comenzii "quit" se iese din program si se inchid fisierele.
+
+	(!)Alte detalii referitoare la implementarea temei se regasesc in fisierul 
+	sursa.
+
+	
+	Andrei Ursache
+
+	
